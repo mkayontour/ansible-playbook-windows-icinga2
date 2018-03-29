@@ -1,1 +1,18 @@
 - name: install icinga 2 agent on windows
+  hosts: all
+  vars:
+    icinga2_powershell_path: powershell/Icinga2Agent.psm1
+    icinga2_powershell_winpath: C:\sw-depot\Icinga2Agent.psm1
+  tasks:
+    - name: gather icinga2 ticket from master
+      shell: "{{ icinga2_powershell_binary }}" pki ticket --cn {{ inventory_hostname }}"
+      register: icinga2_client_ticket
+      delegate_to: "{{ icinga2_powershell_master_fqdn }}"
+
+    - name: copy powershell script to host
+      win_copy:
+        src: "{{ icinga2_powershell_path }}"
+        dest: "{{ icinga2_powershell_winpath }}"
+
+    - name: run icinga 2 powershell installation
+      win_shell: 
