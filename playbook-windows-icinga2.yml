@@ -3,11 +3,21 @@
   vars:
     icinga2_powershell_path: powershell/Icinga2Agent.psm1
     icinga2_powershell_winpath: C:\sw-depot\Icinga2Agent.psm1
+    icinga2_powershell_binary: /usr/sbin/icinga2
+    icinga2_powershell_agent_version: 2.8.2
+    icinga2_powershell_parentzone: null
+    icinga2_powershell_parentendpoints: null
+    # Example 'icinga2a', 'icinga2b'
+    icinga2_powershell_endpoints_config: null
+    # Example 'icinga2a.localhost;5665', 'icinga2b.localhost'
+    icinga2_powershell_global_zones: "'director-global','global-templates'"
+    icinga2_client_ticket: null
   tasks:
     - name: gather icinga2 ticket from master
-      shell: "{{ icinga2_powershell_binary }}" pki ticket --cn {{ inventory_hostname }}"
+      shell: "{{ icinga2_powershell_binary }} pki ticket --cn {{ inventory_hostname }}"
       register: icinga2_client_ticket
       delegate_to: "{{ icinga2_powershell_master_fqdn }}"
+      when: icinga2_client_ticket not defined
 
     - name: copy powershell script to host
       win_copy:
@@ -15,4 +25,14 @@
         dest: "{{ icinga2_powershell_winpath }}"
 
     - name: run icinga 2 powershell installation
-      win_shell: 
+      win_shell: >
+        "{{ icinga2_powershell_winpath }}
+        -AgentName {{ inventory_hostname }}
+        -InstallAgentVersion {{ icinga2_powershell_agent_version }}
+        -ParentZone {{ icinga2_powershell_parentzone }}
+        -ParentEndpoints {{ icinga2_powershell_parentendpoints }}
+        -EndpointsConfig {{ icinga2_powershell_endpoints_config }}
+        -GlobalZones {{ icinga2_powershell_global_zones }}
+        -AgentInstallDirectory {{ icinga2_powershell_winpath }}
+        -AllowUpdates
+        -Ticket {{ icinga2_client_ticket }}"
