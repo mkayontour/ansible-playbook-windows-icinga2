@@ -15,6 +15,7 @@
   tasks:
     - name: gather icinga2 ticket from master
       shell: "{{ icinga2_powershell_binary }} pki ticket --cn {{ inventory_hostname }}"
+      remote_user: root
       register: icinga2_client_ticket
       delegate_to: "{{ icinga2_powershell_master_fqdn }}"
       when: icinga2_client_ticket not defined
@@ -33,6 +34,5 @@
         -ParentEndpoints {{ icinga2_powershell_parentendpoints }}
         -EndpointsConfig {{ icinga2_powershell_endpoints_config }}
         -GlobalZones {{ icinga2_powershell_global_zones }}
-        -AgentInstallDirectory {{ icinga2_powershell_winpath }}
         -AllowUpdates
         -Ticket {{ icinga2_client_ticket }}"
