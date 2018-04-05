@@ -18,7 +18,7 @@
       remote_user: root
       register: icinga2_client_ticket
       delegate_to: "{{ icinga2_powershell_master_fqdn }}"
-      when: icinga2_client_ticket not defined
+      when: icinga2_client_ticket is undefined
 
     - name: copy powershell script to host
       win_copy:
