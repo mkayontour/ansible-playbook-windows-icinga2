@@ -25,10 +25,27 @@
         src: "{{ icinga2_powershell_path }}"
         dest: "{{ icinga2_powershell_winpath }}"
 
-    - name: run icinga 2 powershell installation
+    #- name: run icinga 2 powershell installation
+    #  win_command: >
+    #    "powershell.exe -ExecutionPolicy ByPass -File
+    #    {{ icinga2_powershell_winpath }}
+    #    -AgentName {{ inventory_hostname }}
+    #    -InstallAgentVersion {{ icinga2_powershell_agent_version }}
+    #    -ParentZone {{ icinga2_powershell_parentzone }}
+    #    -ParentEndpoints {{ icinga2_powershell_parentendpoints }}
+    #    -EndpointsConfig {{ icinga2_powershell_endpoints_config }}
+    #    -GlobalZones {{ icinga2_powershell_global_zones }}
+    #    -AllowUpdates
+    #    -Ticket {{ icinga2_client_ticket }}"
+
+    - name: run icinga2 installation
       win_command: >
-        powershell.exe -ExecutionPolicy ByPass -File
-        "{{ icinga2_powershell_winpath }}
+        powershell.exe -Command {
+        Invoke-Command
+        -ScriptBlock {
+        Import-Module
+        "{{ icinga2_powershell_winpath }}";
+        $icinga = Icinga2AgentModule
         -AgentName {{ inventory_hostname }}
         -InstallAgentVersion {{ icinga2_powershell_agent_version }}
         -ParentZone {{ icinga2_powershell_parentzone }}
@@ -36,4 +53,4 @@
         -EndpointsConfig {{ icinga2_powershell_endpoints_config }}
         -GlobalZones {{ icinga2_powershell_global_zones }}
         -AllowUpdates
-        -Ticket {{ icinga2_client_ticket }}"
+        -Ticket {{ icinga2_client_ticket }}
