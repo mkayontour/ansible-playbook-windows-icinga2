@@ -39,7 +39,7 @@
     #    -Ticket {{ icinga2_client_ticket }}"
 
     - name: run icinga2 installation
-      win_command: >
+      win_shell: >
         powershell.exe -ExecutionPolicy ByPass -Command {
         Invoke-Command
         -ScriptBlock {
