@@ -26,7 +26,7 @@
         dest: "{{ icinga2_powershell_winpath }}"
 
     - name: run icinga 2 powershell installation
-      win_shell: >
+      win_command: >
         "{{ icinga2_powershell_winpath }}
         -AgentName {{ inventory_hostname }}
         -InstallAgentVersion {{ icinga2_powershell_agent_version }}
