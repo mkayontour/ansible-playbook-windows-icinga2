@@ -53,4 +53,4 @@
         -EndpointsConfig {{ icinga2_powershell_endpoints_config }}
         -GlobalZones {{ icinga2_powershell_global_zones }}
         -AllowUpdates
-        -Ticket {{ icinga2_client_ticket }}
+        -Ticket {{ icinga2_client_ticket }}; } };
