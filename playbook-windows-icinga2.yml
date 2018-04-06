@@ -2,7 +2,7 @@
   hosts: all
   vars:
     icinga2_powershell_path: powershell/Icinga2Agent.psm1
-    icinga2_powershell_winpath: "C:\sw-depot\Icinga2Agent.psm1"
+    icinga2_powershell_winpath: C:\sw-depot\Icinga2Agent.psm1
     icinga2_powershell_binary: /usr/sbin/icinga2
     icinga2_powershell_agent_version: 2.8.2
     icinga2_powershell_parentzone: null
@@ -44,7 +44,7 @@
         Invoke-Command
         -ScriptBlock {
         Import-Module
-        "{{ icinga2_powershell_winpath }}";
+        {{ icinga2_powershell_winpath }};
         $icinga = Icinga2AgentModule
         -AgentName {{ inventory_hostname }}
         -InstallAgentVersion {{ icinga2_powershell_agent_version }}
