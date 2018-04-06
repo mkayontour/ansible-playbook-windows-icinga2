@@ -40,7 +40,7 @@
 
     - name: run icinga2 installation
       win_command: >
-        powershell.exe -Command {
+        powershell.exe -ExecutionPolicy ByPass -Command {
         Invoke-Command
         -ScriptBlock {
         Import-Module
