@@ -27,6 +27,7 @@
 
     - name: run icinga 2 powershell installation
       win_command: >
+        powershell.exe -ExecutionPolicy ByPass -File
         "{{ icinga2_powershell_winpath }}
         -AgentName {{ inventory_hostname }}
         -InstallAgentVersion {{ icinga2_powershell_agent_version }}
