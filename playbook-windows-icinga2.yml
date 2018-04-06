@@ -57,3 +57,8 @@
         -AllowUpdates
         -Ticket {{ icinga2_client_ticket }}
         -RunInstaller; } };
+      register: installer_result
+
+    - name: Give result from icinga 2 installation
+      debug:
+        msg: "{{ installer_result.stdout_lines }}"
